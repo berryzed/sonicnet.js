@@ -25,13 +25,13 @@ wss.on('connection', function(socket) {
     // Initialize a pairing.
     // q: {token: ...}
     // a: {error: ...}
-    if (json.type == 'start') {
+    if (json.type === 'start') {
       handleStart(socket, json);
     }
     // Confirm a pairing.
     // q: {token: ...}
     // a: {type: connected, conn_id: ...} or {error: ...}
-    if (json.type == 'confirm') {
+    if (json.type === 'confirm') {
       handleConfirm(socket, json);
     }
     // Send a message.
@@ -39,7 +39,7 @@ wss.on('connection', function(socket) {
     // a: {error: ...}
     //
     // Also sends message in format a: {type: message, message: ...}
-    if (json.type == 'message') {
+    if (json.type === 'message') {
       handleMessage(socket, json);
     }
   });
@@ -96,9 +96,9 @@ function handleMessage(socket, json) {
     // If yes, relay the message to the other socket
     var conn = connections[conn_id];
     var response = JSON.stringify({type: 'message', message: message});
-    if (conn.socketA == socket) {
+    if (conn.socketA === socket) {
       conn.socketB.send(response);
-    } else if (conn.socketB == socket) {
+    } else if (conn.socketB === socket) {
       conn.socketA.send(response);
     }
   } else {
@@ -113,11 +113,11 @@ function handleClose(socket) {
   var conn;
   for (var connId in connections) {
     conn = connections[connId];
-    if (conn.socketA == socket) {
+    if (conn.socketA === socket) {
       otherSocket = conn.socketB;
       break;
     }
-    if (conn.socketB == socket) {
+    if (conn.socketB === socket) {
       otherSocket = conn.socketA;
       break;
     }
