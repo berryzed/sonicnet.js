@@ -31,7 +31,7 @@ function createSonicNetwork(opt_coder) {
 }
 
 
-// Build the UI that lets you pick emoticons.
+// Build the UI that lets you pick emoticons.
 createEmoticonList(EMOTICONS);
 if (isMobile()) {
   document.querySelector('#mobile-warning').style.display = 'block';
