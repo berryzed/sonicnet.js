@@ -356,7 +356,7 @@ SonicServer.prototype.getLastRun = function() {
 /**
  * DEBUG ONLY.
  */
-SonicServer.prototype.debugDraw_ = function() {
+SonicServer.prototype.debugDraw_ = function() { /*
   var canvas = document.querySelector('canvas');
   if (!canvas) {
     canvas = document.createElement('canvas');
@@ -374,7 +374,7 @@ SonicServer.prototype.debugDraw_ = function() {
     var barWidth = canvas.width/this.freqs.length;
     drawContext.fillStyle = 'black';
     drawContext.fillRect(i * barWidth, offset, 1, 1);
-  }
+  }*/
 };
 
 /**
