@@ -58,7 +58,7 @@ module.exports = RingBuffer;
 var ALPHABET = '@#\n abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.":\',!%&*()_+-=`~/?><;[]{}';
 // var ALPHABET = '@#\n abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.":\',!%';
 
-function SonicCoder (params) {
+function SonicCoder(params) {
   params = params || {};
   // this.freqMin = params.freqMin || 18500;
   // this.freqMax = params.freqMax || 19500;
@@ -76,7 +76,7 @@ function SonicCoder (params) {
 /**
  * Given a character, convert to the corresponding frequency.
  */
-SonicCoder.prototype.charToFreq = function (char) {
+SonicCoder.prototype.charToFreq = function(char) {
   // Get the index of the character.
   var index = this.alphabet.indexOf(char);
   if (index === -1) {
@@ -356,7 +356,7 @@ SonicServer.prototype.getLastRun = function() {
 /**
  * DEBUG ONLY.
  */
-SonicServer.prototype.debugDraw_ = function() { /*
+SonicServer.prototype.debugDraw_ = function() {
   var canvas = document.querySelector('canvas');
   if (!canvas) {
     canvas = document.createElement('canvas');
@@ -374,7 +374,7 @@ SonicServer.prototype.debugDraw_ = function() { /*
     var barWidth = canvas.width/this.freqs.length;
     drawContext.fillStyle = 'black';
     drawContext.fillRect(i * barWidth, offset, 1, 1);
-  } */
+  }
 };
 
 /**
@@ -433,7 +433,7 @@ var audioContext = new window.AudioContext || new webkitAudioContext();
  * 3. Converts characters into frequencies.
  * 4. Transmits frequencies, waiting in between appropriately.
  */
-function SonicSocket (params) {
+function SonicSocket(params) {
   params = params || {};
   this.coder = params.coder || new SonicCoder();
   this.charDuration = params.charDuration || 0.2;
@@ -442,7 +442,8 @@ function SonicSocket (params) {
   this.debug = params.debug || false;
 }
 
-SonicSocket.prototype.send = function (input, opt_callback) {
+
+SonicSocket.prototype.send = function(input, opt_callback) {
   // Surround the word with start and end characters.
   input = this.coder.startChar + input + this.coder.endChar;
   // Use WAAPI to schedule the frequencies.
@@ -461,7 +462,7 @@ SonicSocket.prototype.send = function (input, opt_callback) {
   }
 };
 
-SonicSocket.prototype.scheduleToneAt = function (freq, startTime, duration) {
+SonicSocket.prototype.scheduleToneAt = function(freq, startTime, duration) {
   audioContext.resume();
   var gainNode = audioContext.createGain();
   // Gain => Merger
