@@ -122,7 +122,8 @@ module.exports = SonicCoder;
 var RingBuffer = require('./ring-buffer.js');
 var SonicCoder = require('./sonic-coder.js');
 
-var audioContext = new window.AudioContext || new webkitAudioContext();
+//var audioContext = new window.AudioContext || new webkitAudioContext();
+var audioContext;
 /**
  * Extracts meaning from audio streams.
  *
@@ -164,6 +165,8 @@ var State = {
  * Start processing the audio stream.
  */
 SonicServer.prototype.start = function() {
+  audioContext = new window.AudioContext || new webkitAudioContext();
+
   // Start listening for microphone. Continue init in onStream.
   var constraints = {
     audio: { optional: [{ echoCancellation: false }] }
@@ -423,7 +426,8 @@ module.exports = SonicServer;
 },{"./ring-buffer.js":1,"./sonic-coder.js":2}],4:[function(require,module,exports){
 var SonicCoder = require('./sonic-coder.js');
 
-var audioContext = new window.AudioContext || new webkitAudioContext();
+//var audioContext = new window.AudioContext || new webkitAudioContext();
+var audioContext;
 
 /**
  * Encodes text as audio streams.
@@ -442,6 +446,10 @@ function SonicSocket(params) {
   this.debug = params.debug || false;
 }
 
+SonicSocket.prototype.start = function() {
+  audioContext = new window.AudioContext || new webkitAudioContext();
+  audioContext.resume();
+};
 
 SonicSocket.prototype.send = function(input, opt_callback) {
   // Surround the word with start and end characters.
@@ -463,7 +471,6 @@ SonicSocket.prototype.send = function(input, opt_callback) {
 };
 
 SonicSocket.prototype.scheduleToneAt = function(freq, startTime, duration) {
-  audioContext.resume();
   var gainNode = audioContext.createGain();
   // Gain => Merger
   gainNode.gain.value = 0;
@@ -506,7 +513,7 @@ isAudibleEl.addEventListener('click', function (e) {
   }
 });
 
-createSonicNetwork();
+//createSonicNetwork();
 
 function createSonicNetwork (coder) {
   // Stop the sonic server if it is listening.
@@ -520,12 +527,16 @@ function createSonicNetwork (coder) {
     sonicServer = new SonicServer({debug: true});
     sonicSocket = new SonicSocket({debug: true});
   }
-
   sonicServer.start();
+  sonicSocket.start();
   sonicServer.on('character', onIncomingCharacter);
   sonicServer.on('message',   onIncomingText);
 }
-
+var startbutton = document.querySelector('#start-button');
+startbutton.addEventListener('click', function (e) {
+  console.log('start working ...');
+  createSonicNetwork();
+})
 var sendbutton = document.querySelector('#send-button');
 var sendtext = document.querySelector('#text-tobesend');
 var recvtext = document.querySelector('#text-toberecv');
@@ -542,5 +553,7 @@ function onIncomingCharacter (character) {
   console.log('[onIncomingCharacter]recving ' + character);
   recvtext.value += character;
 }
+
+startbutton.click();
 
 },{"../lib/sonic-coder.js":2,"../lib/sonic-server.js":3,"../lib/sonic-socket.js":4}]},{},[5]);
