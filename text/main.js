@@ -19,7 +19,7 @@ isAudibleEl.addEventListener('click', function (e) {
   }
 });
 
-createSonicNetwork();
+//createSonicNetwork();
 
 function createSonicNetwork (coder) {
   // Stop the sonic server if it is listening.
@@ -33,12 +33,16 @@ function createSonicNetwork (coder) {
     sonicServer = new SonicServer({debug: true});
     sonicSocket = new SonicSocket({debug: true});
   }
-
   sonicServer.start();
+  sonicSocket.start();
   sonicServer.on('character', onIncomingCharacter);
   sonicServer.on('message',   onIncomingText);
 }
-
+var startbutton = document.querySelector('#start-button');
+startbutton.addEventListener('click', function (e) {
+  console.log('start working ...');
+  createSonicNetwork();
+})
 var sendbutton = document.querySelector('#send-button');
 var sendtext = document.querySelector('#text-tobesend');
 var recvtext = document.querySelector('#text-toberecv');
@@ -55,3 +59,5 @@ function onIncomingCharacter (character) {
   console.log('[onIncomingCharacter]recving ' + character);
   recvtext.value += character;
 }
+
+startbutton.click();
